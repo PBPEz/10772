@@ -20,6 +20,12 @@ class Member extends Model
         'gender',
         'status',
         'username',
-        'password'
+        'password',
+        'masa_berlaku'
     ];
+
+    public function aktivasiMember()
+    {
+        return $this->belongsTo(AktivasiMember::class, 'id_member');
+    }
 }

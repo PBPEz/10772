@@ -44,6 +44,7 @@ class InstrukturController extends Controller
         if ($validator->fails())
             return response(['message' => $validator->errors()], 400);
 
+        $storeData['password'] = bcrypt($storeData['password']);
         $instruktur = Instruktur::create($storeData);
         return response([
             'message' => 'Add Instruktur Success',

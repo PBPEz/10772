@@ -22,4 +22,9 @@ class Pegawai extends Model
     protected $hidden = [
         'token',
     ];
+
+    public function aktivasiMember()
+    {
+        return $this->belongsTo(AktivasiMember::class, 'id_pegawai');
+    }
 }

@@ -49,7 +49,8 @@ class MemberController extends Controller
             'deposit_kelas' => 'numeric',
             'nomor_telepon' => 'required|numeric',
             'gender' => 'required',
-            'status' => 'required'
+            'status' => 'required',
+            'masa_berlaku'
         ]);
 
         if($validate->fails())
@@ -60,6 +61,7 @@ class MemberController extends Controller
         $storeData['id'] = $id;
         $storeData['username'] = $storeData['id'];
         $storeData['password'] = $storeData['tanggal_lahir'];
+        $storeData['password'] = bcrypt($storeData['password']);
 
         $member = Member::create($storeData);
         return response([

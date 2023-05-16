@@ -20,13 +20,13 @@ class AuthController extends Controller
         if(Pegawai::where('nama_pegawai',$request->nama_pegawai)->first())
         {
             $login = Pegawai::where('nama_pegawai',$request->nama_pegawai)->first();
-
+            
             if(Hash::check($request->password, $login['password'])){
                 $pegawai = Pegawai::where('nama_pegawai',$request->nama_pegawai)->first();
             }
             else{
                 return response([
-                    'message' => 'Username atau Password salah'
+                    'message' => 'Password Salah!'
                 ], 400);
             }
             $token = $pegawai->createToken('token')->accessToken;
@@ -37,23 +37,8 @@ class AuthController extends Controller
             ]);
         }else{
             return response([
-                'message' => 'Unauthenticated'
+                'message' => 'Username Salah!'
             ], 400);
         }
-    }
-    public function authentication($id){
-        $pegawai = Pegawai::find($id);
-
-        if ($pegawai->role=="Instruktur") {
-            return response([
-                'message' => 'Retrieve instruktur Success',
-                'data' => $pegawai
-            ], 200);
-        }
-
-        return response([
-            'message' => 'Instruktur Not Found',
-            'data' => null
-        ], 404);
     }
 }
