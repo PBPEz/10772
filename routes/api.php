@@ -2,11 +2,13 @@
 
 use App\Http\Controllers\Api\AktivasiMemberController;
 use App\Http\Controllers\Api\AuthController;
+use App\Http\Controllers\Api\BookingGymController;
 use App\Http\Controllers\Api\InstrukturController;
 use App\Http\Controllers\Api\JadwalUmumController;
 use App\Http\Controllers\Api\MemberController;
 use App\Http\Controllers\Api\MobileController;
 use App\Http\Controllers\Api\PegawaiController;
+use App\Http\Controllers\Api\PresensiGymController;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Route;
 
@@ -27,7 +29,8 @@ Route::middleware('auth:sanctum')->get('/user', function (Request $request) {
 
 Route::post('pegawai', [PegawaiController::class, 'store']);
 Route::post('pegawai/login', [AuthController::class, 'login']);
-Route::post('user/login', [MobileController::class, 'login']);
+Route::post('member/login', [MemberController::class, 'login']);
+Route::post('instruktur/login', [InstrukturController::class, 'login']);
 
 Route::get('member', [MemberController::class, 'index']);
 Route::get('member/{id}', [MemberController::class, 'show']);
@@ -52,3 +55,9 @@ Route::get('aktivasiMember/{id}', [AktivasiMemberController::class, 'show']);
 Route::post('aktivasiMember', [AktivasiMemberController::class, 'store']);
 Route::put('aktivasiMember/{id}', [AktivasiMemberController::class, 'update']);
 Route::delete('aktivasiMember/{id}', [AktivasiMemberController::class, 'destroy']);
+
+Route::get('bookingGym', [BookingGymController::class, 'index']);
+Route::get('bookingGym/{id}', [BookingGymController::class, 'show']);
+Route::post('bookingGym', [BookingGymController::class, 'store']);
+Route::put('bookingGym/{id}', [BookingGymController::class, 'update']);
+Route::delete('bookingGym/{id}', [BookingGymController::class, 'destroy']);

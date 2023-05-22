@@ -17,5 +17,6 @@ class Instruktur extends Model
         'status',
         'gender',
         'password',
+        'role'
     ];
 }

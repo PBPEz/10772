@@ -28,4 +28,9 @@ class Member extends Model
     {
         return $this->belongsTo(AktivasiMember::class, 'id_member');
     }
+
+    public function bookingGym()
+    {
+        return $this->belongsTo(PresensiGym::class,'id_member');
+    }
 }

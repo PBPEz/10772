@@ -6,11 +6,41 @@ use App\Http\Controllers\Controller;
 use App\Models\Member;
 use Illuminate\Http\Request;
 use Illuminate\Validation\Rule;
+use Illuminate\Support\Facades\Hash;
 use Illuminate\Support\Facades\Validator;
 use Haruncpi\LaravelIdGenerator\IdGenerator;
 
 class MemberController extends Controller
 {
+    public function login(Request $request){
+        $request->validate( [
+            'username' => 'required',
+            'password' => 'required'
+        ]);
+
+        if(Member::where('id',$request->username)->first())
+        {
+            $login = Member::where('id',$request->username)->first();
+            
+            if(Hash::check($request->password, $login['password'])){
+                $member = Member::where('id',$request->username)->first();
+            }
+            else{
+                return response([
+                    'message' => 'Password Salah!'
+                ], 400);
+            }
+
+            return response([
+                'message' => 'Login berhasil!',
+                'data' => $member,
+            ]);
+        }else{
+            return response([
+                'message' => 'Username Salah!'
+            ], 400);
+        }
+    }
     /**
      * Display a listing of the resource.
      *
@@ -115,8 +145,8 @@ class MemberController extends Controller
             'nama_member' => 'required',
             'tanggal_lahir' => 'required',
             'email' => 'required|email:rfc,dns',
-            'deposit_uang' => 'numeric',
-            'deposit_kelas' => 'numeric',
+            'deposit_uang' => 'required|numeric',
+            'deposit_kelas' => 'required|numeric',
             'nomor_telepon' => 'required',
             'gender' => 'required',
             'status' => 'required',
@@ -150,6 +180,19 @@ class MemberController extends Controller
         ], 400);
     }
 
+    public function presensiGym(Request $request, $id){
+        $member = Member::find($id);
+        if(is_null($member)){
+            return response([
+                'message' => 'Member Not Found',
+                'data' => null
+            ], 404);
+        }
+
+        $presensiGym = $request->all();
+
+        $member->deposit_uang = $member->deposit_uang - $presensiGym['harga_kelas'];
+    }
     /**
      * Remove the specified resource from storage.
      *

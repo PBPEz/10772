@@ -6,11 +6,40 @@ use App\Http\Controllers\Controller;
 use App\Http\Resources\InstrukturResource;
 use App\Models\Instruktur;
 use Illuminate\Http\Request;
-use Illuminate\Validation\Rule;
+use Illuminate\Support\Facades\Hash;
 use Illuminate\Support\Facades\Validator;
 
 class InstrukturController extends Controller
 {
+    public function login(Request $request){
+        $request->validate( [
+            'username' => 'required',
+            'password' => 'required'
+        ]);
+
+        if(Instruktur::where('nama_instruktur',$request->username)->first())
+        {
+            $login = Instruktur::where('nama_instruktur',$request->username)->first();
+            
+            if(Hash::check($request->password, $login['password'])){
+                $instruktur = Instruktur::where('nama_instruktur',$request->username)->first();
+            }
+            else{
+                return response([
+                    'message' => 'Password Salah!'
+                ], 400);
+            }
+
+            return response([
+                'message' => 'Login berhasil!',
+                'data' => $instruktur,
+            ]);
+        }else{
+            return response([
+                'message' => 'Username Salah!'
+            ], 400);
+        }
+    }
     public function index()
     {
         $instrukturs = Instruktur::all();
@@ -39,6 +68,7 @@ class InstrukturController extends Controller
             'status' => 'required',
             'gender' => 'required',
             'password' => 'required',
+            'role' => 'required'
         ]);
 
         if ($validator->fails())
