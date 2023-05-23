@@ -20,16 +20,24 @@ class BookingKelasController extends Controller
      */
     public function index()
     {
-        $bookingKelas = DB::table('booking_kelas')->join('members', 'booking_kelas.id_member','=','members.id')
-        ->join('jadwal_umums','jadwal_umums.id_kelas','=','jadwal_umums.id')
-        ->join('kelas','jadwal_umums.id_kelas','=','kelas.id')
-        ->join('instrukturs','kelas.id_instruktur','=','instrukturs.id')
-        ->select('booking_kelas.*','members.nama_member','members.deposit_uang',
-                'jadwal_umums.tanggal','jadwal_umums.hari','jadwal_umums.sesi',
-                'kelas.nama_kelas','kelas.harga','instrukturs.nama_instruktur')
-        ->get();
+        $bookingKelas = DB::table('booking_kelas')->join('members', 'booking_kelas.id_member', '=', 'members.id')
+            ->join('jadwal_umums', 'booking_kelas.id_jadwal_umum', '=', 'jadwal_umums.id')
+            ->join('kelas', 'jadwal_umums.id_kelas', '=', 'kelas.id')
+            ->join('instrukturs', 'kelas.id_instruktur', '=', 'instrukturs.id')
+            ->select(
+                'booking_kelas.*',
+                'members.nama_member',
+                'members.deposit_uang',
+                'jadwal_umums.tanggal',
+                'jadwal_umums.hari',
+                'jadwal_umums.sesi',
+                'kelas.nama_kelas',
+                'kelas.harga',
+                'instrukturs.nama_instruktur'
+            )
+            ->get();
 
-        if(count($bookingKelas) > 0){
+        if (count($bookingKelas) > 0) {
             return response([
                 'message' => 'Retrieve All Success',
                 'data' => $bookingKelas
@@ -59,31 +67,31 @@ class BookingKelasController extends Controller
 
         $id = IdGenerator::generate(['table' => 'booking_kelas', 'length' => 10, 'prefix' => date('y.m.')]);
 
-        $tanggal = JadwalUmum::where('id',$request->id_jadwal_umum)->first();
+        $tanggal = JadwalUmum::where('id', $request->id_jadwal_umum)->first();
 
         $storeData['id'] = $id;
         $storeData['tanggal_kelas'] = $tanggal->tanggal;
 
-        if($validate->fails())
-            return response(['message' => $validate->errors()], 400); 
+        if ($validate->fails())
+            return response(['message' => $validate->errors()], 400);
 
-        if(BookingKelas::where('id_member',$request->id_member)->first()){
-            
-            if(BookingKelas::where('tanggal_kelas',$storeData['tanggal_kelas'])->first())
+        if (BookingKelas::where('id_member', $request->id_member)->first()) {
+
+            if (BookingKelas::where('tanggal_kelas', $storeData['tanggal_kelas'])->first())
                 return response(['Member sudah booking pada hari tersebut!']);
         }
 
-        $member = Member::where('id',$request->id_member)->first();
+        $member = Member::where('id', $request->id_member)->first();
 
-        if($member->status == "tidak aktif"){
+        if ($member->status == "tidak aktif") {
             return response(['message' => 'Member tidak aktif!'], 400);
         }
 
         $count = JadwalUmum::where('tanggal', $request->tanggal)
-        ->where('sesi', $request->sesi)
-        ->count();
-        
-        iF($count >= 20)
+            ->where('sesi', $request->sesi)
+            ->count();
+
+        if ($count >= 20)
             return response(['message' => 'Kuota kelas pada waktu tersebut sudah penuh!']);
 
         $bookingKelas = BookingKelas::create($storeData);
@@ -96,14 +104,14 @@ class BookingKelasController extends Controller
     public function update(Request $request, $id)
     {
         $bookingKelas = BookingKelas::find($id);
-        if(is_null($bookingKelas)){
+        if (is_null($bookingKelas)) {
             return response([
                 'message' => 'Booking kelas Not Found',
                 'data' => null
             ], 404);
         }
-    
-        if($bookingKelas->jam_presensi != NULL){
+
+        if ($bookingKelas->jam_presensi != NULL) {
             return response([
                 'message' => 'Member sudah presensi!',
                 'data' => 'Member sudah presensi!'
@@ -112,7 +120,7 @@ class BookingKelasController extends Controller
 
         $bookingKelas->jam_presensi = date('H:i:s');
 
-        if($bookingKelas->save()){
+        if ($bookingKelas->save()) {
             return response([
                 'message' => 'Update Booking Gym Success',
                 'data' => $bookingKelas
@@ -135,10 +143,10 @@ class BookingKelasController extends Controller
     {
         $bookingKelas = BookingKelas::find($id);
 
-        if(!is_null($bookingKelas)){
+        if (!is_null($bookingKelas)) {
             return response([
                 'message' => 'Retrieve booking kelas Success',
-                'data' => $bookingKelas   
+                'data' => $bookingKelas
             ], 200);
         }
 
