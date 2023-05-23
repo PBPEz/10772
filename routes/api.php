@@ -3,6 +3,7 @@
 use App\Http\Controllers\Api\AktivasiMemberController;
 use App\Http\Controllers\Api\AuthController;
 use App\Http\Controllers\Api\BookingGymController;
+use App\Http\Controllers\Api\BookingKelasController;
 use App\Http\Controllers\Api\InstrukturController;
 use App\Http\Controllers\Api\JadwalUmumController;
 use App\Http\Controllers\Api\MemberController;
@@ -61,3 +62,8 @@ Route::get('bookingGym/{id}', [BookingGymController::class, 'show']);
 Route::post('bookingGym', [BookingGymController::class, 'store']);
 Route::put('bookingGym/{id}', [BookingGymController::class, 'update']);
 Route::delete('bookingGym/{id}', [BookingGymController::class, 'destroy']);
+
+Route::get('bookingKelas', [BookingKelasController::class, 'index']);
+Route::get('bookingKelas/{id}', [BookingKelasController::class, 'show']);
+Route::post('bookingKelas', [BookingKelasController::class, 'store']);
+Route::put('bookingKelas/{id}', [BookingKelasController::class, 'update']);
