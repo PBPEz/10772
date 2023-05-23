@@ -47,17 +47,38 @@ class BookingGymController extends Controller
         $storeData = $request->all();
         $validate = Validator::make($storeData, [
             'id_member' => 'required',
-            'tanggal' => '',
             'sesi' => 'required',
             'jam_booking' => ''
         ]);
 
-        if($validate->fails())
-            return response(['message' => $validate->errors()], 400);
-        
         $id = IdGenerator::generate(['table' => 'booking_gyms', 'length' => 10, 'prefix' => date('y.m.')]);
 
         $storeData['id'] = $id;
+        $storeData['tanggal'] = date('Y-m-d');
+
+        if($validate->fails())
+            return response(['message' => $validate->errors()], 400); 
+
+        if(BookingGym::where('id_member',$request->id_member)->first()){
+            
+            if(BookingGym::where('tanggal',$storeData['tanggal'])->first())
+                return response(['Member sudah booking pada hari tersebut!']);
+        }
+
+        $member = Member::where('id',$request->id_member)->first();
+
+        if($member->status == "tidak aktif"){
+            return response(['message' => 'Member tidak aktif!'], 400);
+        }
+
+        $count = DB::table('booking_gyms')
+            ->select(DB::raw('COUNT(*) as total_kuota'))
+            ->groupBy('tanggal')
+            ->havingRaw('COUNT(*) > 1')
+            ->first();
+        
+        iF($count->total_kuota >= 10)
+            return response(['message' => 'Kuota gym pada waktu tersebut sudah penuh!']);
 
         $bookingGym = BookingGym::create($storeData);
         return response([
