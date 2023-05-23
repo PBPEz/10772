@@ -47,6 +47,7 @@ class BookingGymController extends Controller
         $storeData = $request->all();
         $validate = Validator::make($storeData, [
             'id_member' => 'required',
+            'tanggal' => 'required',
             'sesi' => 'required',
             'jam_booking' => ''
         ]);
@@ -54,7 +55,6 @@ class BookingGymController extends Controller
         $id = IdGenerator::generate(['table' => 'booking_gyms', 'length' => 10, 'prefix' => date('y.m.')]);
 
         $storeData['id'] = $id;
-        $storeData['tanggal'] = date('Y-m-d');
 
         if($validate->fails())
             return response(['message' => $validate->errors()], 400); 
