@@ -71,13 +71,11 @@ class BookingGymController extends Controller
             return response(['message' => 'Member tidak aktif!'], 400);
         }
 
-        $count = DB::table('booking_gyms')
-            ->select(DB::raw('COUNT(*) as total_kuota'))
-            ->groupBy('tanggal')
-            ->havingRaw('COUNT(*) > 1')
-            ->first();
+        $count = BookingGym::where('tanggal', $request->tanggal)
+        ->where('sesi', $request->sesi)
+        ->count();
         
-        iF($count->total_kuota >= 10)
+        iF($count >= 10)
             return response(['message' => 'Kuota gym pada waktu tersebut sudah penuh!']);
 
         $bookingGym = BookingGym::create($storeData);
