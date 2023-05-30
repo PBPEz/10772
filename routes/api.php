@@ -6,6 +6,8 @@ use App\Http\Controllers\Api\BookingGymController;
 use App\Http\Controllers\Api\BookingKelasController;
 use App\Http\Controllers\Api\InstrukturController;
 use App\Http\Controllers\Api\JadwalUmumController;
+use App\Http\Controllers\Api\LaporanController;
+use App\Http\Controllers\Api\LaporanGymController;
 use App\Http\Controllers\Api\MemberController;
 use App\Http\Controllers\Api\MobileController;
 use App\Http\Controllers\Api\PegawaiController;
@@ -67,3 +69,6 @@ Route::get('bookingKelas', [BookingKelasController::class, 'index']);
 Route::get('bookingKelas/{id}', [BookingKelasController::class, 'show']);
 Route::post('bookingKelas', [BookingKelasController::class, 'store']);
 Route::put('bookingKelas/{id}', [BookingKelasController::class, 'update']);
+
+Route::get('laporanGym', [LaporanController::class, 'laporanGym']);
+Route::get('laporanKelas',[LaporanController::class, 'laporanKelas']);

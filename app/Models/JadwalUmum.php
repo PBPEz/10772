@@ -13,7 +13,8 @@ class JadwalUmum extends Model
         "id_kelas",
         "tanggal",
         "hari",
-        "sesi"
+        "sesi",
+        "status"
     ];
 
     public function kelas()

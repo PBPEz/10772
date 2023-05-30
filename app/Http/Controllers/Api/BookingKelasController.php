@@ -20,6 +20,7 @@ class BookingKelasController extends Controller
      */
     public function index()
     {
+        //Mengambil data terkait dengan booking kelas.
         $bookingKelas = DB::table('booking_kelas')->join('members', 'booking_kelas.id_member', '=', 'members.id')
             ->join('jadwal_umums', 'booking_kelas.id_jadwal_umum', '=', 'jadwal_umums.id')
             ->join('kelas', 'jadwal_umums.id_kelas', '=', 'kelas.id')
@@ -33,10 +34,11 @@ class BookingKelasController extends Controller
                 'jadwal_umums.sesi',
                 'kelas.nama_kelas',
                 'kelas.harga',
-                'instrukturs.nama_instruktur'
+                'instrukturs.nama_instruktur' //Select (Mengambil data dari masing-masing tabel)
             )
             ->get();
-
+        
+        
         if (count($bookingKelas) > 0) {
             return response([
                 'message' => 'Retrieve All Success',
@@ -123,7 +125,7 @@ class BookingKelasController extends Controller
         if ($bookingKelas->save()) {
             return response([
                 'message' => 'Update Booking Gym Success',
-                'data' => $bookingKelas
+                'data' => $bookingKelas,
             ], 200);
         }
 

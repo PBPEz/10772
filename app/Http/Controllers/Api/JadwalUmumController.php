@@ -46,7 +46,8 @@ class JadwalUmumController extends Controller
             'id_kelas' => 'required',
             'tanggal' => 'required',
             'hari' => 'required',
-            'sesi' => 'required|numeric'
+            'sesi' => 'required|numeric',
+            'status' => 'required'
         ]);
 
         if ($validator->fails())
