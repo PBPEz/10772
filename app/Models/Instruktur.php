@@ -19,4 +19,9 @@ class Instruktur extends Model
         'password',
         'role'
     ];
+
+    public function presensiInstruktur()
+    {
+        return $this->belongsTo(PresensiInstruktur::class, 'id_instruktur');
+    }
 }

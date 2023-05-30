@@ -19,11 +19,11 @@ class JadwalUmum extends Model
 
     public function kelas()
     {
-        return $this->hasMany(Kelas::class, 'id_kelas');
+        return $this->hasMany(Kelas::class, 'id');
     }
 
     public function jadwalUmum()
     {
-        return $this->hasMany(JadwalUmum::class, 'id_jadwal_umum');
+        return $this->hasMany(JadwalUmum::class, 'id');
     }
 }

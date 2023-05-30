@@ -19,4 +19,9 @@ class Kelas extends Model
     {
         return $this->belongsTo(JadwalUmum::class, 'id_kelas');
     }
+
+    public function presensiInstruktur()
+    {
+        return $this->belongsTo(PresensiInstruktur::class, 'id_kelas');
+    }
 }

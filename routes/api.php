@@ -72,3 +72,5 @@ Route::put('bookingKelas/{id}', [BookingKelasController::class, 'update']);
 
 Route::get('laporanGym', [LaporanController::class, 'laporanGym']);
 Route::get('laporanKelas',[LaporanController::class, 'laporanKelas']);
+Route::get('laporanInstruktur',[LaporanController::class, 'laporanInstruktur']);
+Route::get('laporanPendapatan', [LaporanController::class, 'laporanPendapatan']);
